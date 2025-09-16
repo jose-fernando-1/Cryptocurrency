@@ -11,7 +11,7 @@ def parse_strlist(sl):
     return values_only
 
 
-url = 'https://bitinfocharts.com/comparison/bitcoin-transactions.html#alltime'
+url = 'https://bitinfocharts.com/comparison/bitcoin-price.html#alltime'
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -25,13 +25,13 @@ for script in scripts:
         dataList = parse_strlist(StrList)
 
 date = []
-tweet = []
+price = []
 for each in dataList:
     if (dataList.index(each) % 2) == 0:
         date.append(each)
     else:
-        tweet.append(each)
+        price.append(each)
 
-df = pd.DataFrame(list(zip(date, tweet)), columns=["Date","BTC -Tweets"])
+df = pd.DataFrame(list(zip(date, price)), columns=["Date","BTC - Price"])
 
-print(df[["Date", "BTC - Tweets"]])
+df.to_csv('data/bitcoin_price.csv', index=False)
